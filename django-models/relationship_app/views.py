@@ -33,4 +33,4 @@ def register(request):
             return redirect(reverse_lazy('profile'))  # Redirect to the profile page after login
     else:
         form = UserCreationForm()
-    return render(request, 'registration/register.html', {'form': form})
+    return render(request, 'relationship_app/register.html', {'form': form})
