@@ -1,9 +1,9 @@
 from django.urls import path
-from .views import list_books, LibraryDetailView
+from .views import list_books, LibraryDetailView, RegisterView
 
 urlpatterns = [
     path('list/', list_books, name='list'),
-    path('library/', LibraryDetailView.as_view, name='library'),
+    path('library/', LibraryDetailView.as_view(), name='library'),
 ]
 
 from django.contrib.auth.views import LoginView, LogoutView
@@ -11,10 +11,9 @@ from django.urls import path
 
 urlpatterns = [
     path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
 ]
 
-from .views import RegisterView
 from django.urls import path
 
 urlpatterns = [
