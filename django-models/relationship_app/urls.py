@@ -1,7 +1,8 @@
 from django.urls import path, include
 from django.views.generic import TemplateView
 from django.contrib.auth.views import LoginView, LogoutView
-from .views import list_books, LibraryDetailView, RegisterView
+from .views import list_books, LibraryDetailView
+from . import views
 
 urlpatterns = [
     # App-specific views
@@ -13,7 +14,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(template_name='registration/logout.html'), name='logout'),
 
     # Registration and profile views
-    path('register/', RegisterView.as_view(), name='register'),
+    path('register/', views.register, name='register'),
     path('accounts/profile/', TemplateView.as_view(template_name='accounts/profile.html'), name='profile'),
 
     # Include Django's default authentication URLs for password management, etc.
