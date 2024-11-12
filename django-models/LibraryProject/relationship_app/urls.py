@@ -22,9 +22,9 @@ urlpatterns = [
     path('member/', views.member_view, name='member_view'),
 
     # Book management views with permissions
-    path('books/add/', add_book, name='add_book'),
-    path('books/<int:book_id>/edit/', edit_book, name='edit_book'),
-    path('books/<int:book_id>/delete/', delete_book, name='delete_book'),
+    path('add_book/', add_book, name='add_book'),
+    path('edit_book/', edit_book, name='edit_book'),
+    path('delete_book/', delete_book, name='delete_book'),
     
     # Include Django's default authentication URLs for password management, etc.
     path('accounts/', include('django.contrib.auth.urls')),
