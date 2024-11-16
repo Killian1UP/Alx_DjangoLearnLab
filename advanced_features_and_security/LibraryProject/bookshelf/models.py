@@ -31,7 +31,7 @@ class CustomUser(AbstractUser):
     is_active = models.BooleanField(default=True)
     is_admin = models.BooleanField(default=False)
 
-    objects = UserManager()
+    objects = CustomUserManager()
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = []
 
