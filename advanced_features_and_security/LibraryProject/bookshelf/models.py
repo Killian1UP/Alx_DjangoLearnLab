@@ -9,7 +9,7 @@ class Book(models.Model):
 def __init__(self):
     return self.name
 
-class UserManager(BaseUserManager):
+class CustomUserManager(BaseUserManager):
     def create_user(self, date_of_birth, profile_photo, password=None):
         if not date_of_birth:
             raise ValueError("The date of birth is required")
