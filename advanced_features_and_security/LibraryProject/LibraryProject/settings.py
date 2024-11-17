@@ -158,3 +158,14 @@ CSP_IMG_SRC = ("'self'", 'https://trustedimages.com')  # Allow images only from 
 CSP_FONT_SRC = ("'self'", 'https://trustedfonts.com')  # Allow fonts only from 'self' and trusted domains
 CSP_CONNECT_SRC = ("'self'",)  # Control AJAX calls
 CSP_FRAME_SRC = ("'self'",)  # Control the domains that can embed your app
+
+SECURE_SSL_REDIRECT = True
+
+# Instruct browsers to enforce HTTPS for 1 year (31536000 seconds)
+SECURE_HSTS_SECONDS = 31536000
+
+# Apply HSTS policy to all subdomains
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+
+# Allow your site to be included in browsers' HSTS preload list
+SECURE_HSTS_PRELOAD = True
