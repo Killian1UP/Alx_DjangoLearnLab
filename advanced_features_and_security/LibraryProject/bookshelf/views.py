@@ -1,8 +1,18 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
+from .models import Post, Book
 from django.contrib.auth.decorators import permission_required
 
 # Create your views here.
+def book_list(request):
+    books = Book.objects.all()  # Retrieve all books from the database
+    return render(request, 'book_list.html', {'books': books})
+
+def create_book(request):
+    if request.method == 'POST':
+        # Create a new book
+        Book.objects.create(name=request.POST['name'], description=request.POST['description'])
+        return redirect('list')  
+
 @permission_required('bookshelf.can_create', raise_exception=True)
 def create_post(request):
     if request.method == 'POST':
