@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post, Book
 from django.contrib.auth.decorators import permission_required
-from .forms import SearchForm, ExampleForm
+from .forms import ExampleForm
 
 # Create your views here.
 def book_list(request):
@@ -42,18 +42,10 @@ def delete_post(request, post_id):
     return render(request, 'bookshelf/delete_post.html', {'post': post})
 
 def search_books(request):
-    form = SearchForm(request.GET)
+    form = ExampleForm(request.GET)
     results = []
     if form.is_valid():
         query = form.cleaned_data['query']
         results = Book.objects.filter(name__icontains=query)
     return render(request, 'bookshelf/form_example.html', {'form': form, 'results': results})
 
-def example_view(request):
-    form = ExampleForm(request.POST or None)
-    if form.is_valid():
-        # Process the form data
-        name = form.cleaned_data['name']
-        description = form.cleaned_data['description']
-        # Do something with the data...
-    return render(request, 'bookshelf/example_form.html', {'form': form})
