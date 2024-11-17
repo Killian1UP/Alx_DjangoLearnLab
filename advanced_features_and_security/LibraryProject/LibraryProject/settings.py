@@ -169,3 +169,5 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 
 # Allow your site to be included in browsers' HSTS preload list
 SECURE_HSTS_PRELOAD = True
+
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
