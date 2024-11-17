@@ -1,0 +1,39 @@
+<!-- bookshelf/search_results.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+
+    <!-- Search Form -->
+    <form method="GET" action="{% url 'search_books' %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    <!-- Display Search Results -->
+    {% if results %}
+        <h2>Found {{ results|length }} result{{ results|pluralize }}:</h2>
+        <ul>
+            {% for book in results %}
+                <li>
+                    <strong>{{ book.name }}</strong>: {{ book.description }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No results found. Try a different query.</p>
+    {% endif %}
+
+    <hr>
+
+    <a href="{% url 'post_list' %}">Back to Book List</a>
+</body>
+</html>

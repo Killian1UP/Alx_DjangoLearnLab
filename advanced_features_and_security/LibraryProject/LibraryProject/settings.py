@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-%&k!lr)r8y$x-2ubuc^bvj#fwig3_oha!lb(cx$0c%c*b+kh-@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig',
+    'csp',
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -133,3 +135,26 @@ LOGIN_REDIRECT_URL = "/accounts/profile"
 LOGOUT_REDIRECT_URL = "/accounts/profile"
 
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+# Enabling browser XSS protection
+SECURE_BROWSER_XSS_FILTER = True
+
+# Clickjacking protection
+X_FRAME_OPTIONS = 'DENY'
+
+# Prevent browsers from guessing the content type
+SECURE_CONTENT_TYPE_NOSNIFF = True
+
+# Enforce CSRF cookies over HTTPS
+CSRF_COOKIE_SECURE = True
+
+# Enforce session cookies over HTTPS
+SESSION_COOKIE_SECURE = True
+
+CSP_DEFAULT_SRC = ("'self'",)  # Allow resources from the same domain
+CSP_SCRIPT_SRC = ("'self'", 'https://trustedscripts.com')  # Allow scripts only from 'self' and trusted domains
+CSP_STYLE_SRC = ("'self'", 'https://trustedstyles.com')  # Allow CSS from 'self' and trusted domains
+CSP_IMG_SRC = ("'self'", 'https://trustedimages.com')  # Allow images only from 'self' and trusted domains
+CSP_FONT_SRC = ("'self'", 'https://trustedfonts.com')  # Allow fonts only from 'self' and trusted domains
+CSP_CONNECT_SRC = ("'self'",)  # Control AJAX calls
+CSP_FRAME_SRC = ("'self'",)  # Control the domains that can embed your app
