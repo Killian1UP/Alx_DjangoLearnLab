@@ -24,4 +24,4 @@ class AuthorSerializer(serializers.ModelSerializer):
         fields = ['name', 'books']
 
 # The AuthorSerializer includes a books field that is a nested BookSerializer. 
-# This allows the API to return the Author data along with its related books.
+# This allows the API to return the Author data along with its related books.all
