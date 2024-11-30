@@ -13,3 +13,30 @@ is configured to modify an existing book in our API and you can do so by using t
 DeleteView:
 is configured to remove a book in our API and you can do so by using this url http://127.0.0.1:8000/api/books/id/delete/. For permissions i used IsAuthenticated to allow authenticated users to remove a book.
 
+1. Filtering
+Filtering enables users to retrieve books based on specific field values.
+
+Implementation
+Configured filterset_fields to support filtering by:
+title: Filter books by their title.
+author__name: Filter books by the author's name.
+publication_year: Filter books by the year of publication.
+Used DjangoFilterBackend to enable filtering.
+
+2. Searching
+Searching allows users to search across multiple fields in the book list.
+
+Implementation
+Configured search_fields to support searching by:
+title
+author__name
+Used SearchFilter to enable search functionality.
+
+3. Ordering
+Ordering enables users to sort the book list by specific fields.
+
+Implementation
+Configured ordering_fields to support ordering by:
+title
+publication_year
+Used OrderingFilter to enable ordering functionality.
