@@ -4,6 +4,8 @@ from datetime import date
 
 # Created serializers for the models
 class BookSerializer(serializers.ModelSerializer):
+    author = serializers.CharField(source='author.name')
+
     class Meta:
         model = Book
         fields = '__all__'
