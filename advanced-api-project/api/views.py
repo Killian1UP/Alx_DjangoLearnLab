@@ -4,7 +4,7 @@ from .models import Book
 from .serializers import BookSerializer
 from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 # Create your views here.
 
 class BookListView(generics.ListAPIView):
