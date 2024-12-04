@@ -10,7 +10,7 @@ from .models import UserProfile
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
     success_url = reverse_lazy('login')
-    template_name = 'registration/register.html'
+    template_name = 'blog/register.html'
 
     def form_valid(self, form):
         user = form.save()

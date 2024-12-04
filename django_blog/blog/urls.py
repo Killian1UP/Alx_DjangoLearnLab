@@ -5,7 +5,7 @@ from . import views
 
 urlpatterns = [
     # Login & Logout urls
-    path('login/', LoginView.as_view(template_name='registration/login.html'), name='login'),
+    path('login/', LoginView.as_view(template_name='blog/login.html'), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     # Profile & Register urls
     path('accounts/', include('django.contrib.auth.urls')),
