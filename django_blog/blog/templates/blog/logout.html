@@ -11,8 +11,20 @@
     <header>
         <nav>
             <ul>
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <form method="post" action="{% url 'logout' %}" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="background-color: transparent; border: none; color: white; cursor: pointer; font-size: 16px;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                    <li><a href="{% url 'profile' %}">Profile</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
             </ul>
         </nav>
     </header>

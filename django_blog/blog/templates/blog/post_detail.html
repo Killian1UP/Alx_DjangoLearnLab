@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post.title }}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'post_list' %}">Home</a></li>
+                <li><a href="{% url 'post_create' %}">Create Post</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>{{ post.title }}</h1>
+        <p>{{ post.body }}</p>
+        <p><strong>Published on:</strong> {{ post.created_at }}</p>
+        <p><strong>Last updated:</strong> {{ post.updated_at }}</p>
+        <a href="{% url 'post_list' %}">Back to Post List</a>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My Blog</p>
+    </footer>
+</body>
+</html>

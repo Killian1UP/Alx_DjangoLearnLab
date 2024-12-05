@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, DetailView, UpdateView, DeleteView
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
-from .forms import ProfileForm, UserProfileForm
-from .models import UserProfile
+from .forms import ProfileForm, UserProfileForm, PostForm
+from .models import UserProfile, Post
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # Create your views here.
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
@@ -44,3 +45,54 @@ def profile_view(request):
     }
     return render(request, 'blog/profile.html', context)
 
+# To list all the posts
+class PostListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'
+    context_object_name = 'posts'
+
+# To show individual posts
+class PostDetailView(DetailView):
+    model = Post
+    template_name = 'blog/post_detail.html'
+
+# To allow authenticated users to create new posts.
+class PostCreateView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_create.html'
+    success_url = reverse_lazy('post_list')
+
+    def form_valid(self, form):
+        # Automatically set the author as the logged-in user
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# To enable post authors to edit their posts.
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/post_update.html'
+    success_url = reverse_lazy('post_list')
+
+# Ensure only the author can edit the post
+    def test_func(self):
+        post = self.get_object()
+        return post.author == self.request.user
+
+    def form_valid(self, form):
+        # Automatically set the author as the logged-in user
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+# To let authors delete their posts.
+class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Post
+    template_name = 'blog/post_delete.html'
+    success_url = reverse_lazy('post_list')
+
+# Ensure only the author can delete the post
+    def test_func(self):
+        post = self.get_object()
+        return post.author == self.request.user
+    

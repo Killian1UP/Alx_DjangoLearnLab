@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post List</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'post_list' %}">Home</a></li>
+                <li><a href="{% url 'post_create' %}">Create Post</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <h1>Post List</h1>
+
+        {% if posts %}
+            <ul>
+                {% for post in posts %}
+                    <li>
+                        <h2><a href="{% url 'post_detail' post.id %}">{{ post.title }}</a></h2>
+                        <p>{{ post.body|truncatewords:20 }}</p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No posts available at the moment. <a href="{% url 'post_create' %}">Create a new post</a>.</p>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>&copy; 2024 My Blog</p>
+    </footer>
+</body>
+</html>
+
