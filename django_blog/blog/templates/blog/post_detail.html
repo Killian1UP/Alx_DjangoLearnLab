@@ -19,8 +19,8 @@
 
     <div class="content">
         <h1>{{ post.title }}</h1>
-        <p>{{ post.body }}</p>
-        <p><strong>Published on:</strong> {{ post.created_at }}</p>
+        <p>{{ post.content }}</p>  <!-- Change body to content -->
+        <p><strong>Published on:</strong> {{ post.published_date }}</p>
         <p><strong>Last updated:</strong> {{ post.updated_at }}</p>
         <a href="{% url 'post_list' %}">Back to Post List</a>
     </div>

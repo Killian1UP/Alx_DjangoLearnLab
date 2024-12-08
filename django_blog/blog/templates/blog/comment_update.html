@@ -1,0 +1,15 @@
+{% extends 'blog/base.html' %}
+
+{% load static %}
+{% block title %}Update Comment{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <h2>Edit Comment</h2>
+        <form method="POST" action="{% url 'comment_update' post_id=post.id pk=comment.pk %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Update Comment</button>
+        </form>
+    </div>
+{% endblock %}

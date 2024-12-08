@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import UserProfile, Post
+from .models import UserProfile, Post, Comment
 
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -25,3 +25,19 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post 
         fields = ['title', 'content']
+
+# Utilized widgets to provide a larger input area, suitable for comments.
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={
+                'placeholder': 'Write your comment here...',
+                'rows': 4,
+                'cols': 50,
+            })
+        }
+        labels = {
+            'content': 'Comment'
+        }

@@ -1,0 +1,27 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Comment Details{% endblock %}
+
+{% block content %}
+    <div class="comment-detail">
+        <h2>Comment Details</h2>
+        
+        <div class="comment-item">
+            <p class="comment-author"><strong>{{ comment.author.username }}</strong> said:</p>
+            <p class="comment-body">{{ comment.body }}</p>
+            <div class="comment-footer">
+                <span>Posted on: {{ comment.created_at }}</span>
+            </div>
+        </div>
+
+        {% if user == comment.author %}
+            <div class="comment-actions">
+                <a href="{% url 'comment_update' post_id=post.id pk=comment.pk %}">Edit</a>
+                <a href="{% url 'comment_delete' post_id=post.id pk=comment.pk %}">Delete</a>
+            </div>
+        {% endif %}
+        
+        <a href="{% url 'comment_list' post_id=post.id %}">Back to Comments</a>
+    </div>
+{% endblock %}
