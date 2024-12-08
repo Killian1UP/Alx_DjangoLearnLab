@@ -2,6 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path, include
 from .views import RegisterView
 from . import views
+from views import PostByTagListView
 
 urlpatterns = [
     # Login & Logout urls
@@ -27,5 +28,5 @@ urlpatterns = [
     # Filtered tag view 
     path('tag/<int:tag_id>/', views.TagFilterView.as_view(), name='tag_filter'),
     # posts by tags
-    path('tags/<str:tag_name>/', views.posts_by_tag, name='posts_by_tag'),
+    path('tags/<slug:tag_slug>/', PostByTagListView.as_view(), name='posts_by_tag'),
 ]

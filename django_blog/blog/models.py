@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
+from taggit.models import TagBase, GenericTaggedItemBase
 
 # Create your models here.
 class Post(models.Model):
@@ -31,3 +32,9 @@ class Comment(models.Model):
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     post = models.ManyToManyField(Post, related_name='posts')
+
+class TaggedPost(GenericTaggedItemBase):
+    tag = models.ForeignKey('MyCustomTag', on_delete=models.CASCADE, related_name="tagged_items")
+
+class MyCustomTag(TagBase):
+    slug = models.SlugField(unique=True, max_length=100)
