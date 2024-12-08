@@ -6,7 +6,7 @@
 {% block content %}
     <div class="form-container">
         <h2>Post a Comment</h2>
-        <form method="POST" action="{% url 'comment_create' post_id=post.id %}">
+        <form method="POST" action="{% url 'comment_create' pk=post.id %}">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit">Submit Comment</button>

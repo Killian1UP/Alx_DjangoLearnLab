@@ -22,4 +22,10 @@ urlpatterns = [
     path('post/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_create'),
     path('posts/<int:post_id>/comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name='comment_update'),
     path('posts/<int:post_id>/comment/<int:pk>/delete/', views.CommentDetailView.as_view(), name='comment_delete'),
+    # Search view
+    path('search/', views.search_posts, name='search_posts'),
+    # Filtered tag view 
+    path('tag/<int:tag_id>/', views.TagFilterView.as_view(), name='tag_filter'),
+    # posts by tags
+    path('tags/<str:tag_name>/', views.posts_by_tag, name='posts_by_tag'),
 ]

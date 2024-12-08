@@ -16,6 +16,17 @@
                 <li><a href="{% url 'register' %}">Register</a></li>
             </ul>
         </nav>
+
+        <!-- Search Bar -->
+        <form method="get" action="{% url 'search_posts' %}" class="search-bar">
+            <input 
+                type="text" 
+                name="q" 
+                placeholder="Search posts..." 
+                value="{{ request.GET.q|default:'' }}"
+            >
+            <button type="submit">Search</button>
+        </form>
     </header>
 
     <div class="content">

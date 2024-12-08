@@ -24,7 +24,7 @@ class UserProfileForm(forms.ModelForm):
 class PostForm(forms.ModelForm):
     class Meta:
         model = Post 
-        fields = ['title', 'content']
+        fields = ['title', 'content', 'tags']  # added tags
 
 # Utilized widgets to provide a larger input area, suitable for comments.
 class CommentForm(forms.ModelForm):

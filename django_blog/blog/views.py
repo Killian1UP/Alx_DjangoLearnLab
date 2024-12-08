@@ -5,9 +5,11 @@ from django.views.generic import CreateView, ListView, DetailView, UpdateView, D
 from .forms import CustomUserCreationForm
 from django.contrib.auth.decorators import login_required
 from .forms import ProfileForm, UserProfileForm, PostForm, CommentForm
-from .models import UserProfile, Post, Comment
+from .models import UserProfile, Post, Comment, Tag
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
+
 # Create your views here.
 class RegisterView(CreateView):
     form_class = CustomUserCreationForm
@@ -124,16 +126,16 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # Automatically set the author as the logged-in user
         form.instance.author = self.request.user
-        form.instance.post = Post.objects.get(pk=self.kwargs['post_id'])  # Automatically set the post
+        form.instance.post = Post.objects.get(pk=self.kwargs['pk'])  # Automatically set the post
         return super().form_valid(form)
     
     def get_success_url(self):
-        return reverse_lazy('comment_list', kwargs={'post_id': self.kwargs['post_id']})
+        return reverse_lazy('comment_list', kwargs={'post_id': self.kwargs['pk']})
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # Add the post object to the context
-        context['post'] = get_object_or_404(Post, pk=self.kwargs['post_id'])
+        context['post'] = get_object_or_404(Post, pk=self.kwargs['pk'])
         return context
 
 class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -175,3 +177,35 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         context['post'] = self.object.post # Add the related post
         context['comment'] = self.object # Add the comment being deleted
         return context
+
+def search_posts(request):
+    query = request.GET.get('q', '')  # Get the search query from the URL parameter
+    results = Post.objects.none()  # Initialize with no results
+    
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |  # Search in the title
+            Q(content__icontains=query) |  # Search in the content
+            Q(tags__name__icontains=query)  # Search in the tags (if using django-taggit or a ManyToManyField for tags)
+        ).distinct()
+    
+    return render(request, 'blog/search_results.html', {'query': query, 'results': results})
+
+class TagFilterView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html'  # Reuse the post_list template
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        tag_id = self.kwargs.get('tag_id')
+        return Post.objects.filter(tags__id=tag_id)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag'] = Tag.objects.get(id=self.kwargs.get('tag_id'))
+        return context
+    
+def posts_by_tag(request, tag_name):
+    tag = get_object_or_404(Tag, name=tag_name)
+    posts = tag.post_set.all()  # Get all posts associated with the tag
+    return render(request, 'blog/posts_by_tag.html', {'tag': tag, 'posts': posts})
