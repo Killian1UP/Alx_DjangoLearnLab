@@ -3,19 +3,19 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import CustomUserCreationForm
+from rest_framework import generics
 # for profile view
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from .models import CustomUser
-from .serializers import CustomUserSerializer
+from .serializers import CustomUserSerializer, RegisterUserSerializer
 
 # Create your views here.
-class RegisterView(CreateView):
-    form_class = CustomUserCreationForm
-    success_url = reverse_lazy('login')
-    template_name = 'accounts/register.html'
+class RegisterView(generics.CreateAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = RegisterUserSerializer
 
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
@@ -28,9 +28,6 @@ class ProfileView(APIView):
         """
         user = request.user
         serializer = CustomUserSerializer(user)
-        
-        if format == 'html':
-            return render(request, 'accounts/profile.html', {'user': user, 'data': serializer.data})
         
         return Response(serializer.data, status=status.HTTP_200_OK)
 

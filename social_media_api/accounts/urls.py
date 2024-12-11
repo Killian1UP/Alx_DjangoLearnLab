@@ -1,14 +1,17 @@
-from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 from .views import RegisterView, ProfileView
 from rest_framework.authtoken.views import obtain_auth_token
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    # Registration view
+    # User Registration view
     path('register/', RegisterView.as_view(), name='register'),
-    # User management view
+    # User profile management (requires authentication)
     path('profile/', ProfileView.as_view(), name='profile'),
-    # Login & Logout views
-    path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout',)
+    # User login (returns token upon success)
+    path('login/', obtain_auth_token, name='login'),
+
 ]
+
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
