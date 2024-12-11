@@ -1,0 +1,26 @@
+{% extends "accounts/base.html" %}
+{% load static %}
+
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<section class="profile-container">
+    <h1>{{ user.username }}</h1>
+    <img src="{{ user.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+    <p><strong>Bio:</strong> {{ user.bio }}</p>
+
+    <h2>Followers</h2>
+    <ul>
+        {% for follower in data.followers %}
+            <li>{{ follower.username }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Following</h2>
+    <ul>
+        {% for follow in data.following %}
+            <li>{{ follow.username }}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
