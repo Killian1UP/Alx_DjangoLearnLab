@@ -8,7 +8,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ['id', 'author', 'author_username', 'title', 'content', 'created_at', 'updated_at']
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['author', 'created_at', 'updated_at']
     
     def validate_title(self, value):
         """Ensure the title is not empty."""
@@ -23,7 +23,7 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ['id', 'post', 'post_title', 'author', 'author_username', 'content', 'created_at', 'updated_at']
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['author', 'created_at', 'updated_at']
 
     def validate_content(self, value):
         """Ensure the content is not empty."""
