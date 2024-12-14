@@ -71,15 +71,14 @@ class LikePostView(APIView):
 
     def post(self, request, pk):
         user = request.user
-        # Use generics.get_object_or_404 to fetch the post
+        # Fetch the post using generics.get_object_or_404
         post = generics.get_object_or_404(Post, pk=pk)
 
-        # Check if the user has already liked the post
-        if Like.objects.filter(user=user, post=post).exists():
-            return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+        # Use get_or_create to ensure only one like per user per post
+        like, created = Like.objects.get_or_create(user=user, post=post)
 
-        # Create the like object manually
-        like = Like.objects.create(user=user, post=post)
+        if not created:
+            return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a notification for the post author
         Notification.objects.create(
@@ -98,16 +97,16 @@ class UnlikePostView(APIView):
 
     def post(self, request, pk):
         user = request.user
-        # Use generics.get_object_or_404 to fetch the post
+        # Fetch the post using generics.get_object_or_404
         post = generics.get_object_or_404(Post, pk=pk)
 
-        # Check if the user has liked the post
+        # Find the Like object and delete it
         like = Like.objects.filter(user=user, post=post).first()
 
         if not like:
             return Response({"detail": "You have not liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Delete the like
+        # Delete the Like object
         like.delete()
 
         # Optionally, create a notification for unliking the post
