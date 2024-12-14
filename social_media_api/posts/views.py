@@ -74,11 +74,12 @@ class LikePostView(APIView):
         # Use generics.get_object_or_404 to fetch the post
         post = generics.get_object_or_404(Post, pk=pk)
 
-        # Use get_or_create to handle like creation
-        like, created = Like.objects.get_or_create(user=user, post=post)
-
-        if not created:  # Like already exists
+        # Check if the user has already liked the post
+        if Like.objects.filter(user=user, post=post).exists():
             return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Create the like object manually
+        like = Like.objects.create(user=user, post=post)
 
         # Create a notification for the post author
         Notification.objects.create(
