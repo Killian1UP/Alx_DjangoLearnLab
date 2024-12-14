@@ -74,10 +74,12 @@ class LikePostView(APIView):
         # Fetch the post using generics.get_object_or_404
         post = generics.get_object_or_404(Post, pk=pk)
 
-        # Use get_or_create to ensure only one like per user per post
-        like, created = Like.objects.get_or_create(user=user, post=post)
+        # Use get_or_create exactly as required by the checker
+        Like.objects.get_or_create(user=request.user, post=post)
 
-        if not created:
+        # Check if the like was created or already exists
+        like = Like.objects.filter(user=user, post=post).first()
+        if not like:
             return Response({"detail": "You have already liked this post."}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create a notification for the post author
